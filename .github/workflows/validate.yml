@@ -1,0 +1,52 @@
+name: Validate Project Structure
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Check docs folder exists
+      run: |
+        if [ ! -d "docs" ]; then
+          echo "Error: docs folder not found"
+          exit 1
+        fi
+    
+    - name: Check ERD file exists
+      run: |
+        if ! ls docs/*.png docs/*.pdf >/dev/null 2>&1; then
+          echo "Error: No ERD file found (must be .png or .pdf)"
+          exit 1
+        fi
+    
+    - name: Check API endpoints file
+      run: |
+        if ! ls docs/*.md >/dev/null 2>&1; then
+          echo "Error: No API endpoints file found (must be .md)"
+          exit 1
+        fi
+    
+    - name: Check SQL script
+      run: |
+        if ! ls docs/*.sql >/dev/null 2>&1; then
+          echo "Error: No SQL script found (must be .sql)"
+          exit 1
+        fi
+    
+    - name: Check README exists
+      run: |
+        if [ ! -f "README.md" ]; then
+          echo "Error: README.md not found"
+          exit 1
+        fi
+    
+    - name: Success
+      run: echo "✅ All required files exist!"
