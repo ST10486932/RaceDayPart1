@@ -19,34 +19,51 @@ jobs:
           echo "Error: docs folder not found"
           exit 1
         fi
+        echo "docs folder exists"
+    
+    - name: List docs folder contents
+      run: |
+        echo "Files in docs folder:"
+        ls -la docs/
     
     - name: Check ERD file exists
       run: |
-        if ! ls docs/*.png docs/*.pdf >/dev/null 2>&1; then
-          echo "Error: No ERD file found (must be .png or .pdf)"
+        if ls docs/erd-diagram.png 1> /dev/null 2>&1; then
+          echo "erd-diagram.png found"
+        elif ls docs/*.png 1> /dev/null 2>&1; then
+          echo "Found a PNG file:"
+          ls docs/*.png
+        else
+          echo "Error: No ERD file found"
           exit 1
         fi
     
     - name: Check API endpoints file
       run: |
-        if ! ls docs/*.md >/dev/null 2>&1; then
-          echo "Error: No API endpoints file found (must be .md)"
+        if ls docs/*.md 1> /dev/null 2>&1; then
+          echo "API endpoints file found"
+        else
+          echo "Error: No API endpoints file found"
           exit 1
         fi
     
     - name: Check SQL script
       run: |
-        if ! ls docs/*.sql >/dev/null 2>&1; then
-          echo "Error: No SQL script found (must be .sql)"
+        if ls docs/*.sql 1> /dev/null 2>&1; then
+          echo "SQL script found"
+        else
+          echo "Error: No SQL script found"
           exit 1
         fi
     
     - name: Check README exists
       run: |
-        if [ ! -f "README.md" ]; then
+        if [ -f "README.md" ]; then
+          echo "README.md found"
+        else
           echo "Error: README.md not found"
           exit 1
         fi
     
     - name: Success
-      run: echo "✅ All required files exist!"
+      run: echo "All required files exist!"
